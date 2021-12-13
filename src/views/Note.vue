@@ -21,7 +21,7 @@
     <div class="container container--flex container--col">
         <div class="input__wrapper">
             <span class="input__label">Title</span>
-            <input type="text" class="input" autocomplete="none" :value="selectedNote.title">
+            <input type="text" class="input" autocomplete="none" v-model="selectedNote.title" placeholder="Put title here">
         </div>
         <div class="input__wrapper ">
             <span class="input__label">Tags</span>
@@ -34,10 +34,11 @@
         </div>
         <div class="input__wrapper ">
             <span class="input__label">Details</span>
-            <textarea name="" id="" cols="30" rows="10" class="input textarea" :value="selectedNote.detils"></textarea>
+            <textarea cols="30" rows="10" class="input textarea" v-model="selectedNote.detils" placeholder="What means this note for you?"></textarea>
         </div>
         <div class="button-group">
-            <button class="button button--accept" @click="saveNote">CREAR</button>
+            <button v-if="notes[notes.findIndex(note =>{return note.id === selectedNote.id ;})]" class="button button--accept" @click="saveNote">GUARDAR</button>
+            <button class="button button--accept" @click="createNote">CREAR</button>
             <button class="button button--decline">BORRAR</button>
         </div>
     </div>
@@ -51,14 +52,15 @@
               Una vez acepte realizar los cambios, ya no podra revertirlos.
           </div>
           <div class="modal__options">
-              <button class="modal__button modal__button--accept" >ACEPTAR</button>
-            <button class="modal__button modal__button--decline">CANCELAR</button>
+              <button class="modal__button modal__button--accept" @click="updateNote" >ACEPTAR</button>
+            <button class="modal__button modal__button--decline" @click="closeModal">CANCELAR</button>
           </div>
       </div>
   </div>
 </template>
 
-<script>   
+<script>
+const $ = require("jquery");
 
 export default {
   name: 'Notes',
@@ -69,6 +71,7 @@ export default {
         })];
         if (note){
             this.selectedNote = note;
+            console.log(note)
         }
     },
     addTag(event){
@@ -79,18 +82,36 @@ export default {
             return note.id === this.selectedNote.id ;
         })];
         if (note){
-            note = this.selectedNote;
+            $(".modal__container")
+                .css("display", "flex")
+                .hide()
+                .fadeIn();
         }else{
-            this.notes.push(this.selectedNote)
+            createNote()
         }
+    },
+    createNote(){
+        this.selectedNote.id = this.notes.length
+        console.log(this.notes)
+        this.notes.push(this.selectedNote)
+    },
+    updateNote(){
+        let note = this.notes[this.notes.findIndex(note =>{
+            return note.id === this.selectedNote.id ;
+        })];
+        note = this.selectedNote;
+        $(".modal__container").fadeOut()
+    },
+    closeModal(){
+        $(".modal__container").fadeOut()
     }
   },
   data(){
     return{
         selectedNote: {
             id:"none",
-            title:"Put title here",
-            detils:"What means this note for you?",
+            title:"",
+            detils:"",
             tags:["Tanger","BniAhmed"]
         },
         notes:[
@@ -101,7 +122,7 @@ export default {
             tags:["Tanger","BniAhmed", "lol"]
             },
             {
-            id:2,
+            id:1,
             title: "Nota 2",
             detils:"What means this note for you?",
             tags:["Tanger","BniAhmed", "lol"]
@@ -167,7 +188,7 @@ export default {
 }
 
 .modal__container{
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
     position:fixed;
