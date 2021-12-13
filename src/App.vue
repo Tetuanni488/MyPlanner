@@ -8,9 +8,8 @@
         <div class="dropdown__button"> <div>This</div> <span class="material-icons">add</span></div>
         <div class="dropdown__content">
           <router-link class="link" to="/">Home</router-link>
-          <router-link class="link" to="/about">About</router-link>
-          <router-link class="link" to="/note">Home</router-link>
-          <router-link class="link" to="/">Home</router-link>
+          <router-link class="link" to="/Note">Notas</router-link>
+          <router-link class="link" to="/planner">Crear un plan</router-link>
         </div>
       </div>
     </nav>
@@ -18,6 +17,7 @@
   </div>
 </template>
 
+ 
 <style lang="scss">
 
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;900&family=Roboto+Mono&display=swap');
@@ -25,47 +25,60 @@
 :root{
   --bg-color-primary:#292929;
   --bg-color-secondary:#181818;
+  --bg-color-secondary-light:#222222;
   --bg-color-primary-light:#3b3b3b;
+  --bg-color-black-light:#2b2a2a;
   --color-grey:#8d8d8d;
+  --color-accept-green:#008b00;
+  --color-accept-red:#a80000;
 }
 
-*{
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+*
+{
+  box-sizing:border-box;
+  padding:0;
+  margin:0;
+  text-decoration: none;
+}
+* {
+  overscroll-behavior: contain;
+  overscroll-behavior-block: contain;
+  scroll-behavior: contain;
+}
+body,html{
+  height: 100vh
 }
 
 body{
   background-color: var(--bg-color-primary);
 }
 
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-}
-
 .wrapper{
   position: fixed;
   display: flex;
   flex-direction: row;
+  flex: 1;
   width: 100%;
-  min-height: 100%;
+  height: 100vh;
+  font-family: 'Roboto Mono', monospace;
 }
 
 .container{
   position: relative;
   width:100%;
-  min-height: 100%;
-  padding:10px;
-
   &--flex{
     display: flex;
+    flex: 1;
     gap: 5px;
   }
   &--col{
     flex-direction: column;
+  }
+  &--row{
+    flex-direction: row;
+  }
+  &--pad-10{
+      padding:10px;
   }
 }
 .input__wrapper{
@@ -75,18 +88,22 @@ body{
   color: var(--color-grey);
   text-align: start;
 
-  &.input__label{
-    font-size: 25px;
-  }
   .input{
     width: 100%;
     outline: none;
     padding: 5px;
+    font-family: 'Roboto Mono', monospace;
     border: var(--bg-color-primary-light) solid 2px;
     border-radius: 5px;
     background-color: var(--bg-color-secondary);
     font-size: 20px;
     color: var(--color-grey);
+  }
+  .textarea{
+    resize: none;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
   }
 
   .tags{
@@ -94,6 +111,7 @@ body{
     flex-direction: row;
     gap: 10px;
     width: 100%;
+    max-width: 100%;
     padding: 10px;
     border: var(--bg-color-primary-light) solid 2px;
     border-radius: 5px;
@@ -115,6 +133,40 @@ body{
       padding: 5px;
       font-size: 20px;
       color: var(--color-grey);
+    }
+  }
+}
+
+.button-group{
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  gap: 10px;
+  margin-top: 1em;
+  .button{
+    width: max-content;
+    min-width: 100px;
+    padding: 1em;
+    outline: none;
+    border: none;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 17px;
+    text-align: center;
+    color: var(--color-grey);
+    border: var(--bg-color-primary-light) solid 2px;
+    border-radius: 5px;
+    background-color: var(--bg-color-secondary);
+    transition: all 0.3s;
+
+    &--accept:hover{
+      color: var(--color-accept-green);
+      border: var(--color-accept-green) solid 2px;
+      background-color: var(--bg-color-black-light);
+    }
+    &--decline:hover{
+      color: var(--color-accept-red);
+      border: var(--color-accept-red) solid 2px;
+      background-color: var(--bg-color-black-light);
     }
   }
 }
